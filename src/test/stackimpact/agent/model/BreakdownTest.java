@@ -66,76 +66,75 @@ public class BreakdownTest {
 
     @Test
     public void removeChild() throws Exception {
-      Breakdown root = new Breakdown(Breakdown.TYPE_CALLGRAPH, "root");
+        Breakdown root = new Breakdown(Breakdown.TYPE_CALLGRAPH, "root");
 
-      Breakdown child1 = new Breakdown(Breakdown.TYPE_CALLSITE, "child1");
-      root.removeChild(child1.name);
+        Breakdown child1 = new Breakdown(Breakdown.TYPE_CALLSITE, "child1");
+        root.removeChild(child1.name);
 
-      assertTrue(root.findChild("child1") == null);
+        assertTrue(root.findChild("child1") == null);
     }
 
 
     @Test
     public void increment() throws Exception {
-      Breakdown b = new Breakdown(Breakdown.TYPE_CALLGRAPH, "root");
-      b.increment(0.1, 1);
-      b.increment(0.2, 2);
+        Breakdown b = new Breakdown(Breakdown.TYPE_CALLGRAPH, "root");
+        b.increment(0.1, 1);
+        b.increment(0.2, 2);
 
-      assertEquals(0.3, b.measurement, 0.1);
-      assertEquals(3, b.numSamples);
+        assertEquals(0.3, b.measurement, 0.1);
+        assertEquals(3, b.numSamples);
     }
 
 
     @Test
     public void propagate() throws Exception {
-      Breakdown root = new Breakdown(Breakdown.TYPE_CALLGRAPH, "root");
-      root.measurement = 1;
-      root.numSamples = 1;
+        Breakdown root = new Breakdown(Breakdown.TYPE_CALLGRAPH, "root");
+        root.measurement = 1;
+        root.numSamples = 1;
 
-      Breakdown child = new Breakdown(Breakdown.TYPE_CALLSITE, "child");
-      child.measurement = 2;
-      child.numSamples = 1;
-      root.addChild(child);
+        Breakdown child = new Breakdown(Breakdown.TYPE_CALLSITE, "child");
+        child.measurement = 2;
+        child.numSamples = 1;
+        root.addChild(child);
 
-      root.propagate();
+        root.propagate();
 
-      assertEquals(3.0, root.measurement, 0.0);
-      assertEquals(2, root.numSamples);
+        assertEquals(3.0, root.measurement, 0.0);
+        assertEquals(2, root.numSamples);
 
     }
 
 
     @Test
     public void normalize() throws Exception {
-      Breakdown root = new Breakdown(Breakdown.TYPE_CALLGRAPH, "root");
-      root.measurement = 20;
+        Breakdown root = new Breakdown(Breakdown.TYPE_CALLGRAPH, "root");
+        root.measurement = 20;
 
-      Breakdown child = new Breakdown(Breakdown.TYPE_CALLSITE, "child");
-      child.measurement = 10;
-      root.addChild(child);
+        Breakdown child = new Breakdown(Breakdown.TYPE_CALLSITE, "child");
+        child.measurement = 10;
+        root.addChild(child);
 
-      root.normalize(5);
+        root.normalize(5);
 
-      assertEquals(4.0, root.measurement, 0.0);
-      assertEquals(2.0, child.measurement, 0.0);
+        assertEquals(4.0, root.measurement, 0.0);
+        assertEquals(2.0, child.measurement, 0.0);
 
     }
 
 
     @Test
     public void evaluatePercent() throws Exception {
-      Breakdown root = new Breakdown(Breakdown.TYPE_CALLGRAPH, "root");
-      root.numSamples = 4;
+        Breakdown root = new Breakdown(Breakdown.TYPE_CALLGRAPH, "root");
+        root.numSamples = 4;
 
-      Breakdown child = new Breakdown(Breakdown.TYPE_CALLSITE, "child");
-      child.numSamples = 2;
-      root.addChild(child);
+        Breakdown child = new Breakdown(Breakdown.TYPE_CALLSITE, "child");
+        child.numSamples = 2;
+        root.addChild(child);
 
-      root.evaluatePercent(10);
+        root.evaluatePercent(10);
 
-      assertEquals(40.0, root.measurement, 0.0);
-      assertEquals(20.0, child.measurement, 0.0);
-
+        assertEquals(40.0, root.measurement, 0.0);
+        assertEquals(20.0, child.measurement, 0.0);
     }
 
 

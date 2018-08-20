@@ -15,7 +15,7 @@ import com.stackimpact.agent.reporters.*;
 
 
 public class Agent {
-	public final static String VERSION = "1.0.0";
+    public final static String VERSION = "1.0.0";
 
     private static Agent instance;
 
@@ -59,8 +59,8 @@ public class Agent {
             return instance;
         }
 
-    	instance = new Agent();
-    	return instance;
+        instance = new Agent();
+        return instance;
     }
 
 
@@ -286,18 +286,18 @@ public class Agent {
             }
         }
 
-    	try {
-	    	loadAgentLib();
+        try {
+            loadAgentLib();
 
             if (!attach(isDebugMode)) {
                 logError("Attaching JVMTI agent failed.");
                 return;
             }
-	    }
-	    catch (Exception ex) {
-	    	logException(ex);
-	    	return;
-	    }
+        }
+        catch (Exception ex) {
+            logException(ex);
+            return;
+        }
 
         apiRequest = new APIRequest(this);
         configLoader = new ConfigLoader(this);
@@ -452,20 +452,20 @@ public class Agent {
     }
 
 
-	public void logInfo(String message) {
+    public void logInfo(String message) {
         logMessage("INFO", message);
-	}
+    }
 
 
-	public void logError(String message) {
+    public void logError(String message) {
         logMessage("ERROR", message);
-	}
+    }
 
 
     public void logException(Throwable t) {
         logMessage("EXCEPTION", t.getMessage());
-		if (isDebugMode) {
-			t.printStackTrace();
-		}
-	}
+        if (isDebugMode) {
+            t.printStackTrace();
+        }
+    }
 }

@@ -42,15 +42,15 @@ Frame* CreateFrame(jmethodID method, jint bci) {
     error = jvmti->GetMethodName(method, &method_name, NULL, NULL);
     Agent::instance.CheckJVMTIError(jvmti, error, "GetMethodName");
     if (Agent::instance.CheckJVMTIError(jvmti, error, "GetMethodDeclaringClass")) {
-    	frame->method_name = method_name;
+        frame->method_name = method_name;
     }
 
     error = jvmti->GetMethodDeclaringClass(method, &method_class);
     if (Agent::instance.CheckJVMTIError(jvmti, error, "GetMethodDeclaringClass")) {
-	    error = jvmti->GetClassSignature(method_class, &class_sig, NULL);
-	    if (Agent::instance.CheckJVMTIError(jvmti, error, "GetClassSignature")) {
-	    	frame->class_name = FormatClassSignature(class_sig);
-	    }
+        error = jvmti->GetClassSignature(method_class, &class_sig, NULL);
+        if (Agent::instance.CheckJVMTIError(jvmti, error, "GetClassSignature")) {
+            frame->class_name = FormatClassSignature(class_sig);
+        }
     }
 
     jint line_count = 0;

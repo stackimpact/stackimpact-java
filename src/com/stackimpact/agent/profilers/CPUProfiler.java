@@ -8,14 +8,14 @@ public class CPUProfiler implements Profiler {
 
     public final static long SAMPLING_RATE = 10000; // microseconds
 
-	private Agent agent;
+    private Agent agent;
 
     private Breakdown profile;
 
 
-	public CPUProfiler(Agent agent) {
-		this.agent = agent;
-	}
+    public CPUProfiler(Agent agent) {
+        this.agent = agent;
+    }
 
 
     public boolean setupProfiler() {
@@ -23,12 +23,12 @@ public class CPUProfiler implements Profiler {
             return false;
         }
 
-    	return setupCPUProfiler(SAMPLING_RATE);
+        return setupCPUProfiler(SAMPLING_RATE);
     }
 
 
     public void destroyProfiler() {
-    	destroyCPUProfiler();
+        destroyCPUProfiler();
     }
 
 
@@ -38,12 +38,12 @@ public class CPUProfiler implements Profiler {
 
 
     public void startProfiler() {
-    	startCPUProfiler();
+        startCPUProfiler();
     }
 
 
     public void stopProfiler() {
-    	Record[] records = stopCPUProfiler();
+        Record[] records = stopCPUProfiler();
 
         for (Record record : records) {
             /*agent.logInfo("Record");
@@ -88,7 +88,7 @@ public class CPUProfiler implements Profiler {
         profileData.unitInterval = 0;
         profileData.profile = profile;
 
-    	return profileData;
+        return profileData;
     }
 
 

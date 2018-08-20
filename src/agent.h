@@ -13,30 +13,30 @@ class AllocationProfiler;
 class LockProfiler;
 
 class Agent {
-	public:
-		bool debug_mode;
-		bool is_attached;
-		CPUProfiler* cpu_profiler;
-		AllocationProfiler* allocation_profiler;
-		LockProfiler* lock_profiler;
+    public:
+        bool debug_mode;
+        bool is_attached;
+        CPUProfiler* cpu_profiler;
+        AllocationProfiler* allocation_profiler;
+        LockProfiler* lock_profiler;
 
-		Agent() {
-			debug_mode = false;
-			is_attached = false;
-		}
+        Agent() {
+            debug_mode = false;
+            is_attached = false;
+        }
 
-		static Agent instance;
+        static Agent instance;
 
-		JavaVM* jvm;
-		JNIEnv* jni;
-		jvmtiEnv* jvmti;
+        JavaVM* jvm;
+        JNIEnv* jni;
+        jvmtiEnv* jvmti;
 
-		void Init(JavaVM* jvm);
-		bool Attach();
-		bool CheckJVMTIError(jvmtiEnv* jvmti, jvmtiError error, string msg);
-		void LogMessage(string level, string msg);
-		void LogInfo(string msg);
-		void LogError(string msg);
+        void Init(JavaVM* jvm);
+        bool Attach();
+        bool CheckJVMTIError(jvmtiEnv* jvmti, jvmtiError error, string msg);
+        void LogMessage(string level, string msg);
+        void LogInfo(string msg);
+        void LogError(string msg);
 };
 
 

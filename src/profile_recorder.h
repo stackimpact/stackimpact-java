@@ -14,14 +14,14 @@ using namespace std;
 
 
 typedef struct {
-	jint bci;
-	jmethodID method_id;
+    jint bci;
+    jmethodID method_id;
 } ASGCT_CallFrame;
 
 typedef struct {
-	JNIEnv* env;
-	jint num_frames;
-	ASGCT_CallFrame* frames;
+    JNIEnv* env;
+    jint num_frames;
+    ASGCT_CallFrame* frames;
 } ASGCT_CallTrace;
 
 extern "C" void AsyncGetCallTrace(ASGCT_CallTrace *trace, jint depth, void* ucontext);
@@ -45,54 +45,54 @@ enum {
 
 
 class Sample {
-  	public:
-		ASGCT_CallFrame frames[MAX_FRAMES];
-  		ASGCT_CallTrace call_trace;
-		double measurement;
+    public:
+        ASGCT_CallFrame frames[MAX_FRAMES];
+        ASGCT_CallTrace call_trace;
+        double measurement;
 
-		Sample() {
-			call_trace = {Agent::instance.jni, MAX_FRAMES, frames};
-		}
+        Sample() {
+            call_trace = {Agent::instance.jni, MAX_FRAMES, frames};
+        }
 };
 
 
 class Frame {
-  	public:
-		string class_name;
-		string method_name;
-		int line_number;
+    public:
+        string class_name;
+        string method_name;
+        int line_number;
 
-		Frame() {
-			line_number = 0;
-		}
+        Frame() {
+            line_number = 0;
+        }
 };
 
 
 class Record {
-	public:
-		vector<Frame*> stack_trace;
-		long num_samples;
-		double total;
+    public:
+        vector<Frame*> stack_trace;
+        long num_samples;
+        double total;
 
-		Record() {
-			num_samples = 0;
-			total = 0;
-		}
+        Record() {
+            num_samples = 0;
+            total = 0;
+        }
 
-		void AddFrame(Frame* frame);
-		long GenerateID();
+        void AddFrame(Frame* frame);
+        long GenerateID();
 };
 
 
 class ProfileRecorder {
-  	public:
-  		Sample samples[MAX_SAMPLES];
-  		atomic<int> sample_index{0};
+    public:
+        Sample samples[MAX_SAMPLES];
+        atomic<int> sample_index{0};
 
-		void Reset();
-		void RecordSample(double measurement, void* context);
-		//vector<Record*>* BuildProfile();
-		jobjectArray ExportProfile(JNIEnv* env);
+        void Reset();
+        void RecordSample(double measurement, void* context);
+        //vector<Record*>* BuildProfile();
+        jobjectArray ExportProfile(JNIEnv* env);
 };
 
 

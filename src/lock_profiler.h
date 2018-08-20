@@ -25,24 +25,24 @@ inline int fastrand() {
 
 
 class LockProfiler {
-	public:
-		ProfileRecorder* profile_recorder;
-		long sampling_rate;
-		long max_samples;
-		atomic<long> num_samples{0};
-		long start_ts = 0;
+    public:
+        ProfileRecorder* profile_recorder;
+        long sampling_rate;
+        long max_samples;
+        atomic<long> num_samples{0};
+        long start_ts = 0;
 
-		LockProfiler() {
-			profile_recorder = new ProfileRecorder();
-		}
+        LockProfiler() {
+            profile_recorder = new ProfileRecorder();
+        }
 
-		bool SetupProfiler();
-		void DestroyProfiler();
-		void StartProfiler();
-		void StopProfiler();
-		void RecordLock(long enter_ts, long wait_time);
-		static void JNICALL MonitorContendedEnter(jvmtiEnv* jvmti, JNIEnv* env, jthread thread, jobject object);
-		static void JNICALL MonitorContendedEntered(jvmtiEnv* jvmti, JNIEnv* env, jthread thread, jobject object);
+        bool SetupProfiler();
+        void DestroyProfiler();
+        void StartProfiler();
+        void StopProfiler();
+        void RecordLock(long enter_ts, long wait_time);
+        static void JNICALL MonitorContendedEnter(jvmtiEnv* jvmti, JNIEnv* env, jthread thread, jobject object);
+        static void JNICALL MonitorContendedEntered(jvmtiEnv* jvmti, JNIEnv* env, jthread thread, jobject object);
 };
 
 #endif // _LOCK_PROFILER_H_

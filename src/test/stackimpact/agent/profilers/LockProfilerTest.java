@@ -25,54 +25,54 @@ public class LockProfilerTest {
 
         final Object lock = new Object();
 
-		lockProfiler.startLockProfiler();
+        lockProfiler.startLockProfiler();
 
-		Thread t = new Thread(new Runnable() {
-    		public void run() {
-    			try {
-    				synchronized(lock) {
-						Thread.sleep(1000);
-    				}
-				}
-				catch(Exception ex) {
-					ex.printStackTrace();
-				}
-	        }
-	    });
-    	t.start();
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    synchronized(lock) {
+                        Thread.sleep(1000);
+                    }
+                }
+                catch(Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        t.start();
 
-		Thread.sleep(500);
+        Thread.sleep(500);
 
-    	synchronized(lock) {
-    		Thread.sleep(10);
-    	}
+        synchronized(lock) {
+            Thread.sleep(10);
+        }
 
-		t.join();
+        t.join();
 
         ArrayList found = new ArrayList();
-		Record[] records = lockProfiler.stopLockProfiler();
-		for (Record record : records) {
-			assertTrue(record.numSamples > 0);
+        Record[] records = lockProfiler.stopLockProfiler();
+        for (Record record : records) {
+            assertTrue(record.numSamples > 0);
 
-			for (Frame frame : record.frames) {
-				if (frame.className.indexOf("LockProfilerTest") != -1 &&
-						frame.methodName.indexOf("profile") != -1) {
-					found.add(1);
-				}
-			}
+            for (Frame frame : record.frames) {
+                if (frame.className.indexOf("LockProfilerTest") != -1 &&
+                        frame.methodName.indexOf("profile") != -1) {
+                    found.add(1);
+                }
+            }
 
-			/*agent.logInfo("Record");
-			agent.logInfo("num samples: " + record.numSamples);
-			agent.logInfo("total: " + record.total);
-			agent.logInfo("Frames");
-			for (Frame frame : record.frames) {
-				agent.logInfo("class name: " + frame.className);
-				agent.logInfo("method name:" + frame.methodName);				
-			}*/
-		}
+            /*agent.logInfo("Record");
+            agent.logInfo("num samples: " + record.numSamples);
+            agent.logInfo("total: " + record.total);
+            agent.logInfo("Frames");
+            for (Frame frame : record.frames) {
+                agent.logInfo("class name: " + frame.className);
+                agent.logInfo("method name:" + frame.methodName);               
+            }*/
+        }
 
-		lockProfiler.destroyProfiler();
+        lockProfiler.destroyProfiler();
 
-		assertTrue(!found.isEmpty());
+        assertTrue(!found.isEmpty());
     }
 }

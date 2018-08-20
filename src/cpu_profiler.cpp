@@ -22,7 +22,7 @@ bool CPUProfiler::SetupProfiler() {
 
     struct sigaction sa;
     sigemptyset(&sa.sa_mask);
-	sa.sa_handler = NULL;
+    sa.sa_handler = NULL;
     sa.sa_sigaction = SignalHandler;
     sa.sa_flags = SA_RESTART | SA_SIGINFO;
 
@@ -49,7 +49,7 @@ void CPUProfiler::DestroyProfiler() {
 void CPUProfiler::StartProfiler() {
     profile_recorder->Reset();
 
-	SetSamplingRate(sampling_rate);
+    SetSamplingRate(sampling_rate);
 }
 
 
@@ -64,8 +64,8 @@ void CPUProfiler::SetSamplingRate(long rate) {
     timer.it_interval.tv_usec = rate;
     timer.it_value = timer.it_interval;
     if (setitimer(ITIMER_PROF, &timer, 0) == -1) {
-    	ostringstream msg;
-    	msg << "setitimer failed with error " << errno;
+        ostringstream msg;
+        msg << "setitimer failed with error " << errno;
         Agent::instance.LogError(msg.str());
         return;
     }
@@ -73,7 +73,7 @@ void CPUProfiler::SetSamplingRate(long rate) {
 
 
 void CPUProfiler::HandleSignal(void* context) {
-	profile_recorder->RecordSample(0, context);
+    profile_recorder->RecordSample(0, context);
 }
 
 

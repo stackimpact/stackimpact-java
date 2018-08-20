@@ -28,12 +28,12 @@ public class ProcessReporterTest {
         List<MessageQueue.Message> queue = agent.getMessageQueue().getQueue();
         Map<String, Double> measurements = new HashMap<String, Double>();
         for (MessageQueue.Message msg : queue) {
-        	Map metric = (Map)msg.content;
-        	String key = 
-        			(String)metric.get("category") + 
-        			(String)metric.get("name") + 
-        			(String)metric.get("unit");
-        	measurements.put(key, ((Double)((Map)metric.get("measurement")).get("value")));
+            Map metric = (Map)msg.content;
+            String key = 
+                    (String)metric.get("category") + 
+                    (String)metric.get("name") + 
+                    (String)metric.get("unit");
+            measurements.put(key, ((Double)((Map)metric.get("measurement")).get("value")));
         }
 
 
@@ -53,34 +53,34 @@ public class ProcessReporterTest {
         assertTrue(value != null && value > 0);
 
         /*Map memMetric = (Map)queue.get(0).content;
-		assertEquals(Metric.CATEGORY_MEMORY, memMetric.get("category"));
-		assertEquals(Metric.NAME_USED_MEMORY_SIZE, memMetric.get("name"));
-		assertEquals(Metric.UNIT_BYTE, memMetric.get("unit"));
-		assertTrue(((Double)((Map)memMetric.get("measurement")).get("value")) > 0);
+        assertEquals(Metric.CATEGORY_MEMORY, memMetric.get("category"));
+        assertEquals(Metric.NAME_USED_MEMORY_SIZE, memMetric.get("name"));
+        assertEquals(Metric.UNIT_BYTE, memMetric.get("unit"));
+        assertTrue(((Double)((Map)memMetric.get("measurement")).get("value")) > 0);
 
         Map threadMetric = (Map)queue.get(1).content;
-		assertEquals(Metric.CATEGORY_RUNTIME, threadMetric.get("category"));
-		assertEquals(Metric.NAME_THREAD_COUNT, threadMetric.get("name"));
-		assertEquals(Metric.UNIT_NONE, threadMetric.get("unit"));
-		assertTrue(((Double)((Map)threadMetric.get("measurement")).get("value")) > 0);
+        assertEquals(Metric.CATEGORY_RUNTIME, threadMetric.get("category"));
+        assertEquals(Metric.NAME_THREAD_COUNT, threadMetric.get("name"));
+        assertEquals(Metric.UNIT_NONE, threadMetric.get("unit"));
+        assertTrue(((Double)((Map)threadMetric.get("measurement")).get("value")) > 0);
 
         Map cpuMetric = (Map)queue.get(2).content;
-		assertEquals(Metric.CATEGORY_CPU, cpuMetric.get("category"));
-		assertEquals(Metric.NAME_CPU_USAGE, cpuMetric.get("name"));
-		assertEquals(Metric.UNIT_PERCENT, cpuMetric.get("unit"));
-		assertTrue(((Double)((Map)cpuMetric.get("measurement")).get("value")) > 0);
+        assertEquals(Metric.CATEGORY_CPU, cpuMetric.get("category"));
+        assertEquals(Metric.NAME_CPU_USAGE, cpuMetric.get("name"));
+        assertEquals(Metric.UNIT_PERCENT, cpuMetric.get("unit"));
+        assertTrue(((Double)((Map)cpuMetric.get("measurement")).get("value")) > 0);
 
-		System.out.println(queue.size());
+        System.out.println(queue.size());
         Map gcCyclesMetric = (Map)queue.get(queue.size() - 2).content;
-		assertEquals(Metric.CATEGORY_GC, cpuMetric.get("category"));
-		assertEquals(Metric.NAME_GC_CYCLES, cpuMetric.get("name"));
-		assertEquals(Metric.UNIT_NONE, cpuMetric.get("unit"));
-		assertTrue(((Double)((Map)cpuMetric.get("measurement")).get("value")) > 0);
+        assertEquals(Metric.CATEGORY_GC, cpuMetric.get("category"));
+        assertEquals(Metric.NAME_GC_CYCLES, cpuMetric.get("name"));
+        assertEquals(Metric.UNIT_NONE, cpuMetric.get("unit"));
+        assertTrue(((Double)((Map)cpuMetric.get("measurement")).get("value")) > 0);
 
         Map gcTimeMetric = (Map)queue.get(queue.size() - 1).content;
-		assertEquals(Metric.CATEGORY_GC, cpuMetric.get("category"));
-		assertEquals(Metric.NAME_GC_TIME, cpuMetric.get("name"));
-		assertEquals(Metric.UNIT_NONE, cpuMetric.get("unit"));
-		assertTrue(((Double)((Map)cpuMetric.get("measurement")).get("value")) > 0);*/
+        assertEquals(Metric.CATEGORY_GC, cpuMetric.get("category"));
+        assertEquals(Metric.NAME_GC_TIME, cpuMetric.get("name"));
+        assertEquals(Metric.UNIT_NONE, cpuMetric.get("unit"));
+        assertTrue(((Double)((Map)cpuMetric.get("measurement")).get("value")) > 0);*/
     }
 }

@@ -12,9 +12,9 @@ public class AgentUtils {
     public final static String AGENT_FRAME_PREFIX = "com.stackimpact.agent";
 
 
-	public static long timestamp() {
-		return System.currentTimeMillis() / 1000L;
-	}
+    public static long timestamp() {
+        return System.currentTimeMillis() / 1000L;
+    }
 
 
     public static long millis() {
@@ -27,10 +27,10 @@ public class AgentUtils {
     }
 
 
-	public static String generateUUID() throws Exception {
+    public static String generateUUID() throws Exception {
         UUID uuid = UUID.randomUUID();
         return generateSHA1(uuid.toString());
-	}
+    }
 
 
     public static String getSystemTempDir() {
@@ -54,18 +54,18 @@ public class AgentUtils {
 
 
     public static String getOSTag() {
-    	String osName = System.getProperty("os.name").toLowerCase();
-    	if (osName.indexOf("linux")  >= 0) {
-    		return "linux";
-    	}
-    	else if (osName.indexOf("mac") >= 0) {
-    		return "macos";
-    	}
-    	else if (osName.indexOf("windows") >= 0) {
-    		return "win";
-    	}
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.indexOf("linux")  >= 0) {
+            return "linux";
+        }
+        else if (osName.indexOf("mac") >= 0) {
+            return "macos";
+        }
+        else if (osName.indexOf("windows") >= 0) {
+            return "win";
+        }
 
-    	return null;
+        return null;
     }
 
 

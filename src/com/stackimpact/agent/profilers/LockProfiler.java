@@ -9,14 +9,14 @@ public class LockProfiler implements Profiler {
     public final static long SAMPLING_RATE = 1000; // microseconds
     public final static long MAX_SAMPLES = 1000;
 
-	private Agent agent;
+    private Agent agent;
 
     private Breakdown profile;
 
 
-	public LockProfiler(Agent agent) {
-		this.agent = agent;
-	}
+    public LockProfiler(Agent agent) {
+        this.agent = agent;
+    }
 
 
     public boolean setupProfiler() {
@@ -24,12 +24,12 @@ public class LockProfiler implements Profiler {
             return false;
         }
 
-    	return setupLockProfiler(SAMPLING_RATE, MAX_SAMPLES);
+        return setupLockProfiler(SAMPLING_RATE, MAX_SAMPLES);
     }
 
 
     public void destroyProfiler() {
-    	destroyLockProfiler();
+        destroyLockProfiler();
     }
 
 
@@ -39,12 +39,12 @@ public class LockProfiler implements Profiler {
 
 
     public void startProfiler() {
-    	startLockProfiler();
+        startLockProfiler();
     }
 
 
     public void stopProfiler() {
-    	Record[] records = stopLockProfiler();
+        Record[] records = stopLockProfiler();
 
         for (Record record : records) {
             /*agent.logInfo("Record");
@@ -85,7 +85,7 @@ public class LockProfiler implements Profiler {
         profileData.unitInterval = 1;
         profileData.profile = profile;
 
-    	return profileData;
+        return profileData;
     }
 
 

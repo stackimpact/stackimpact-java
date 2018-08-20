@@ -6,12 +6,12 @@ JAR=$(JAVA_HOME)/bin/jar
 
 OS:=$(shell uname -s)
 ifeq ($(OS), Darwin)
-  CPPFLAGS += -Wl,-undefined,dynamic_lookup
-  INCLUDES += -I$(JAVA_HOME)/include/darwin
-  OS_TAG=macos
+	CPPFLAGS += -Wl,-undefined,dynamic_lookup
+	INCLUDES += -I$(JAVA_HOME)/include/darwin
+	OS_TAG=macos
 else
-  INCLUDES += -I$(JAVA_HOME)/include/linux
-  OS_TAG=linux
+	INCLUDES += -I$(JAVA_HOME)/include/linux
+	OS_TAG=linux
 endif
 
 LIB_VERSION=1.0.0
