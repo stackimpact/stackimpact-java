@@ -15,7 +15,8 @@ import com.stackimpact.agent.reporters.*;
 
 
 public class Agent {
-    public final static String VERSION = "1.0.0";
+    public final static String VERSION = "1.0.1";
+    public final static String SAAS_DASHBOARD_ADDRESS = "https://agent-api.stackimpact.com";
 
     private static Agent instance;
 
@@ -271,6 +272,10 @@ public class Agent {
         if (agentKey == null || appName == null) {
             logError("Invalid initialization parameters");
             return;
+        }
+
+        if(dashboardAddress == null) {
+            dashboardAddress = SAAS_DASHBOARD_ADDRESS;
         }
 
         this.agentKey = agentKey;

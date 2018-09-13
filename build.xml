@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 
 <project name="stackimpact" basedir="." default="bin">
-    <property name="version" value="1.0.0"/>
     <property name="src.dir" value="src"/>
     <property name="lib.dir" value="lib"/>
     <property name="build.dir" value="build"/>
