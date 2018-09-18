@@ -15,7 +15,7 @@ else
 	OS_TAG=linux
 endif
 
-LIB_VERSION=1.0.1
+LIB_VERSION=1.0.2
 LIB_NAME=libstackimpact-$(LIB_VERSION)-$(OS_TAG)-x64.so
 
 
@@ -23,6 +23,7 @@ LIB_NAME=libstackimpact-$(LIB_VERSION)-$(OS_TAG)-x64.so
 
 build: src/*.cpp src/*.h
 	mkdir -p build
+	rm -f build/libstackimpact-*-$(OS_TAG)-x64.so
 	$(CPP) $(CPPFLAGS) $(INCLUDES) -fPIC -shared -o build/$(LIB_NAME) src/*.cpp -ldl -lpthread
 
 test: build

@@ -83,8 +83,24 @@ The agent can be configured by setting initialization options using the followin
 * `StackImpact.setAppVersion(String appVersion)` (Optional) Sets application version, which can be used to associate profiling information with the source code release.
 * `StackImpact.setAppEnvironment(String appEnvironment)` (Optional) Used to differentiate applications in different environments.
 * `StackImpact.setHostName(String hostName)` (Optional) By default, host name will be the OS hostname.
+* `StackImpact.setAutoProfilingMode(boolean isAutoProfilingMode)` (Optional) If set to `false`, disables automatic profiling and reporting. Focused profiling should be used instead. Useful for environments without support for timers or background tasks.
 * `StackImpact.setDebugMode(boolean isDebugMode)` (Optional) Enables debug logging.
 * `StackImpact.setCPUProfilerDisabled(boolean isDisabled)`, `setLockProfilerDisabled(boolean isDisabled)` (Optional) Disables respective profiler when `true`.
+
+
+#### Focused profiling
+
+Use `StackImpact.profile()` to instruct the agent when to start and stop profiling. The agent decides if and which profiler is activated. Normally, this method should be used in repeating code, such as request or event handlers. Usage example:
+
+```java
+ProfileSpan span = StackImpact.profile();
+
+// your code here
+
+span.stop();
+```
+
+Import `ProfileSpan` object from `com.stackimpact.agent.ProfileSpan`.
 
 
 #### Shutting down the agent

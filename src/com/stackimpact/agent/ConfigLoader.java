@@ -12,6 +12,7 @@ public class ConfigLoader {
     private Agent agent;
 
     private Timer loadTimer;
+    private long lastLoadTS;
 
     public ConfigLoader(Agent agent) {
         this.agent = agent;
@@ -19,6 +20,10 @@ public class ConfigLoader {
 
 
     public void start() {
+        if (!agent.isAutoProfilingMode()) {
+            return;
+        }
+
         loadTimer = new Timer();
         loadTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -42,6 +47,12 @@ public class ConfigLoader {
 
 
     public void load() throws Exception {
+        long now = AgentUtils.millis();
+        if (!agent.isAutoProfilingMode() && lastLoadTS > now - LOAD_INTERVAL) {
+          return;
+        }
+        lastLoadTS = now;
+
         Object response = agent.getAPIRequest().post("config", new HashMap());
         if (response instanceof HashMap) {
             HashMap config = (HashMap)response;

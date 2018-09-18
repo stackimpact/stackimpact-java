@@ -21,7 +21,10 @@ public class ProfileReporter {
     private boolean isStarted = false;
     private long profileStartTS;
     private long profileDuration;
+    private boolean isSpanActive;
     private int spanCount;
+    private long spanStart;
+    private Timer spanTimeoutTimer;
 
 
     public ProfileReporter(Agent agent, Profiler profiler, ProfilerConfig config) {
@@ -67,34 +70,36 @@ public class ProfileReporter {
 
         reset();
 
-        final Random rand = new Random(AgentUtils.millis());
+        if (agent.isAutoProfilingMode()) {
+            final Random rand = new Random(AgentUtils.millis());
 
-        spanTimer = new Timer();
-        spanTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(rand.nextInt(config.spanInterval - config.maxSpanDuration));
-                    profile();
+            spanTimer = new Timer();
+            spanTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(rand.nextInt(config.spanInterval - config.maxSpanDuration));
+                        startProfiling();
+                    }
+                    catch(Exception ex) {
+                        agent.logException(ex);
+                    }
                 }
-                catch(Exception ex) {
-                    agent.logException(ex);
-                }
-            }
-        }, config.spanInterval, config.spanInterval);
+            }, config.spanInterval, config.spanInterval);
 
-        reportTimer = new Timer();
-        reportTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    report();
+            reportTimer = new Timer();
+            reportTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        report(false);
+                    }
+                    catch(Exception ex) {
+                        agent.logException(ex);
+                    }
                 }
-                catch(Exception ex) {
-                    agent.logException(ex);
-                }
-            }
-        }, config.reportInterval, config.reportInterval);
+            }, config.reportInterval, config.reportInterval);
+        }
     }
 
 
@@ -126,35 +131,65 @@ public class ProfileReporter {
     }
 
 
-    public synchronized void profile() throws Exception {
+    public synchronized boolean startProfiling() throws Exception {
         if (!isStarted) {
-          return;
-        }
-
-        if (profileDuration > config.maxProfileDuration * 1e6) {
-          agent.logInfo(config.logPrefix + ": max profiling duration reached.");
-          return;
+          return false;
         }
 
         if (spanCount > config.maxSpanCount) {
           agent.logInfo(config.logPrefix + ": max recording count reached.");
-          return;
+          return false;
+        }
+
+        if (profileDuration > config.maxProfileDuration * 1e6) {
+          agent.logInfo(config.logPrefix + ": max profiling duration reached.");
+          return false;
         }
 
         if (!agent.getProfilerLock().compareAndSet(false, true)) {
           agent.logInfo(config.logPrefix + ": profiler lock exists.");
-          return;
+          return false;
         }
+
         agent.logInfo(config.logPrefix + ": started.");
 
         try {
             profiler.startProfiler();
-            long spanStart = AgentUtils.nanos();
+            spanStart = AgentUtils.nanos();
             spanCount++;
+            isSpanActive = true;
 
-            Thread.sleep(config.maxSpanDuration);
+            spanTimeoutTimer = new Timer();
+            spanTimeoutTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        stopProfiling();
+                    }
+                    catch(Exception ex) {
+                        agent.logException(ex);
+                    }
+                }
+            }, config.maxSpanDuration);
+        }
+        catch(Exception ex) {
+          agent.logException(ex);
+        }
 
-            profileDuration += AgentUtils.nanos() - spanStart;
+        return true;
+    }
+
+
+    public synchronized boolean stopProfiling() throws Exception {
+        if (!isSpanActive) {
+            return false;
+        }
+        isSpanActive = false;
+
+        spanTimeoutTimer.cancel();
+        profileDuration += AgentUtils.nanos() - spanStart;
+
+        try {
             profiler.stopProfiler();
 
             agent.logInfo(config.logPrefix + ": stopped.");
@@ -164,16 +199,28 @@ public class ProfileReporter {
         }
 
         agent.getProfilerLock().set(false);
+
+        return true;
     }
 
 
-    public synchronized void report() throws Exception {
+    public synchronized void report(boolean withInterval) throws Exception {
         if (!isStarted) {
           return;
         }
 
+        if (withInterval) {
+            if (profileStartTS > AgentUtils.millis() - config.reportInterval) {
+                return;
+            } 
+            else if (profileStartTS < AgentUtils.millis() - 2 * config.reportInterval) {
+              reset();
+              return;
+            }
+        }
+
         if (profileDuration == 0) {
-          return;
+            return;
         }
 
         agent.logInfo(config.logPrefix + ": reporting profile.");

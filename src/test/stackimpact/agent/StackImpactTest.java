@@ -17,5 +17,5 @@ public class StackImpactTest {
         StackImpact.start("key1", "app1");
 
         assertTrue(Agent.getInstance().isAgentStarted());
-    }
+    }    
 }

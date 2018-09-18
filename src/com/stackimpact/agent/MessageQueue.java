@@ -89,6 +89,10 @@ public class MessageQueue {
     public void flush() {
         long now = AgentUtils.millis();
 
+        if (!agent.isAutoProfilingMode() && lastFlushTS > now - FLUSH_INTERVAL) {
+          return;
+        }
+
         if (queue.size() == 0) {
             return;
         }

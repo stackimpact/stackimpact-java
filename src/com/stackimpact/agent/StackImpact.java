@@ -77,7 +77,19 @@ public class StackImpact {
     }
 
 
-   public static boolean isCPUProfilerDisabled() {
+    public static boolean isAutoProfilingMode() {
+        Agent agent = Agent.getInstance();
+        return agent.isAutoProfilingMode();
+    }
+
+
+    public static void setAutoProfilingMode(boolean isAutoProfilingMode) {
+        Agent agent = Agent.getInstance();
+        agent.setAutoProfilingMode(isAutoProfilingMode);
+    }
+
+
+    public static boolean isCPUProfilerDisabled() {
         Agent agent = Agent.getInstance();
         return agent.isCPUProfilerDisabled();
     }
@@ -119,9 +131,9 @@ public class StackImpact {
     }
 
 
-    public static void setDebugMode(boolean debugMode) {
+    public static void setDebugMode(boolean isDebugMode) {
         Agent agent = Agent.getInstance();
-        agent.setDebugMode(debugMode);
+        agent.setDebugMode(isDebugMode);
     }
 
     public static boolean isAgentFramesEnabled() {
@@ -145,6 +157,12 @@ public class StackImpact {
     public static void destroy() {
         Agent agent = Agent.getInstance();
         agent.destroy();
+    }
+
+
+    public static ProfileSpan profile() {
+        Agent agent = Agent.getInstance();
+        return agent.profile();
     }
 
 

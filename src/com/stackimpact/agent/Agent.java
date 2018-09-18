@@ -15,7 +15,7 @@ import com.stackimpact.agent.reporters.*;
 
 
 public class Agent {
-    public final static String VERSION = "1.0.1";
+    public final static String VERSION = "1.0.2";
     public final static String SAAS_DASHBOARD_ADDRESS = "https://agent-api.stackimpact.com";
 
     private static Agent instance;
@@ -33,8 +33,10 @@ public class Agent {
     private boolean isAgentStarted = false;
     private boolean isAgentDestroyed = false;
     private boolean isAgentEnabled = false;
+    private boolean isAutoProfilingMode = true;
     private boolean isProfilingDisabled = false;
     private AtomicBoolean profilerLock = new AtomicBoolean(false);
+    private AtomicBoolean spanLock = new AtomicBoolean(false);
 
     private String dashboardAddress;
     private String agentKey;
@@ -124,6 +126,16 @@ public class Agent {
     }
 
 
+    public boolean isAutoProfilingMode() {
+        return isAutoProfilingMode;
+    }
+
+
+    public void setAutoProfilingMode(boolean isAutoProfilingMode) {
+        this.isAutoProfilingMode = isAutoProfilingMode;
+    }
+
+
     public boolean isProfilingDisabled() {
         return isProfilingDisabled;
     }
@@ -136,6 +148,11 @@ public class Agent {
 
     public AtomicBoolean getProfilerLock() {
         return profilerLock;
+    }
+
+
+    public AtomicBoolean getSpanLock() {
+        return spanLock;
     }
 
 
@@ -430,6 +447,14 @@ public class Agent {
 
         logInfo("Loading JVM TI agent: " + agentLibPath);
         System.load(agentLibPath);
+    }
+
+
+    public ProfileSpan profile() {
+        ProfileSpan span = new ProfileSpan(this);
+        span.start();
+
+        return span;
     }
 
 

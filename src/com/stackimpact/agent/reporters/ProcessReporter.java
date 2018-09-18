@@ -39,6 +39,10 @@ public class ProcessReporter {
         }
         isStarted = true;
 
+        if (!agent.isAutoProfilingMode()) {
+            return;
+        }
+
         reset();
 
         reportTimer = new Timer();
