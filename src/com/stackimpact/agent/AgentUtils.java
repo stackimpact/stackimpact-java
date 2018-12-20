@@ -1,6 +1,8 @@
 package com.stackimpact.agent;
 
 import java.util.Random;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.security.MessageDigest;
 import java.util.Formatter;
 import java.util.UUID;
@@ -69,13 +71,34 @@ public class AgentUtils {
     }
 
 
-    public static double getJavaVersion() {
-        String version = System.getProperty("java.version");
-        int pos = version.indexOf('.');
-        pos = version.indexOf('.', pos+1);
-        return Double.parseDouble(version.substring (0, pos));
+    public static int[] getJavaVersion() throws Exception {
+        String version = System.getProperty("java.runtime.version");
+        if (version == null) {
+            throw new Exception("java.runtime.version property is not available");
+        }
+
+        int major = 0;
+        Pattern p = Pattern.compile("^(?:1\\.)?(\\d+)");
+        Matcher m = p.matcher(version);
+        if (m.lookingAt()) {
+            major = Integer.parseInt(m.group(1));
+        }
+
+        int update = 0;
+        p = Pattern.compile(".*_(\\d+)");
+        m = p.matcher(version);
+        if (m.lookingAt()) {
+            update = Integer.parseInt(m.group(1));
+        }
+
+        if (major > 0) {
+            return new int[] {major, update};
+        }
+        else {
+            throw new Exception("Cannot parse java.runtime.verison property: " + version);
+        }
     }
-    
+
 
     public static String generateSHA1(String str) throws Exception {
         MessageDigest crypt = MessageDigest.getInstance("SHA-1");

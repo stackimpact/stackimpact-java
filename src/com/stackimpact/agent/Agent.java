@@ -15,7 +15,7 @@ import com.stackimpact.agent.reporters.*;
 
 
 public class Agent {
-    public final static String VERSION = "1.0.2";
+    public final static String VERSION = "1.0.4";
     public final static String SAAS_DASHBOARD_ADDRESS = "https://agent-api.stackimpact.com";
 
     private static Agent instance;
@@ -272,8 +272,14 @@ public class Agent {
             return;
         }
 
-        if (AgentUtils.getJavaVersion() < 1.7) {
-            logError("Java versions older than 1.7 are not supported.");
+        try {
+            if (AgentUtils.getJavaVersion()[0] < 7) {
+                logError("Java versions older than 7 are not supported.");
+                return;
+            }
+        }
+        catch (Exception ex) {
+            logException(ex);
             return;
         }
 

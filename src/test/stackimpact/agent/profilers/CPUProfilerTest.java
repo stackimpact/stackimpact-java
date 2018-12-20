@@ -21,6 +21,11 @@ public class CPUProfilerTest {
 
         final CPUProfiler cpuProfiler = new CPUProfiler(agent);
 
+        int[] version = AgentUtils.getJavaVersion();
+        if (version[0] == 8 && version[1] <= 152) {
+            return;
+        }
+
         assertTrue(cpuProfiler.setupProfiler());
 
         final ArrayList found = new ArrayList();
@@ -43,12 +48,12 @@ public class CPUProfilerTest {
                             }
                         }
 
-                        agent.logInfo("Record");
-                        agent.logInfo("num samples: " + record.numSamples);
-                        agent.logInfo("total: " + record.total);
-                        agent.logInfo("Frames");
+                        //agent.logInfo("Record");
+                        //agent.logInfo("num samples: " + record.numSamples);
+                        //agent.logInfo("total: " + record.total);
+                        //agent.logInfo("Frames");
                         for (Frame frame : record.frames) {
-                            agent.logInfo(frame.toString());
+                            //agent.logInfo(frame.toString());
                         }
                     }
                 }

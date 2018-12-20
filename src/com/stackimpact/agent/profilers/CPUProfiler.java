@@ -23,6 +23,17 @@ public class CPUProfiler implements Profiler {
             return false;
         }
 
+        try {
+            int[] version = AgentUtils.getJavaVersion();
+            if (version[0] == 8 && version[1] <= 152) {
+                agent.logError("CPU profiler is not supported in [1.8, 1.8.152] due to AsyncGetCallTrace");
+            }
+        }
+        catch (Exception ex) {
+            agent.logException(ex);
+            return false;
+        }
+
         return setupCPUProfiler(SAMPLING_RATE);
     }
 

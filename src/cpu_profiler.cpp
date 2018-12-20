@@ -10,6 +10,10 @@ using namespace std;
 
 
 void SignalHandler(int signum, siginfo_t *info, void *context) {
+    if (info->si_code <= 0) {
+        return;
+    }
+
     Agent::instance.cpu_profiler->HandleSignal(context);
 }
 

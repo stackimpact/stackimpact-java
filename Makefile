@@ -15,7 +15,7 @@ else
 	OS_TAG=linux
 endif
 
-LIB_VERSION=1.0.2
+LIB_VERSION=1.0.4
 LIB_NAME=libstackimpact-$(LIB_VERSION)-$(OS_TAG)-x64.so
 
 
