@@ -75,7 +75,11 @@ Frame* CreateFrame(jmethodID method, jint bci) {
 
 
 void ProfileRecorder::RecordSample(double measurement, void* context) {
-    Sample* sample = &samples[sample_index++ % MAX_SAMPLES];
+    if (sample_index + 1 > MAX_SAMPLES) {
+        return;
+    }
+
+    Sample* sample = &samples[sample_index++];
     sample->measurement = measurement;
 
     AsyncGetCallTrace(&sample->call_trace, MAX_FRAMES, context);
