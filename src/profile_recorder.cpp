@@ -78,9 +78,16 @@ void ProfileRecorder::RecordSample(double measurement, void* context) {
     if (sample_index + 1 > MAX_SAMPLES) {
         return;
     }
-
+    
     Sample* sample = &samples[sample_index++];
     sample->measurement = measurement;
+
+    JNIEnv* jni;
+    int rc = Agent::instance.jvm->GetEnv((void**)&jni, JNI_VERSION_1_6);
+    if (rc != JNI_OK) {
+        return;
+    }
+    sample->call_trace.env_id = jni;
 
     AsyncGetCallTrace(&sample->call_trace, MAX_FRAMES, context);
 }

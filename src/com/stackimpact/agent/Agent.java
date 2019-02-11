@@ -15,7 +15,7 @@ import com.stackimpact.agent.reporters.*;
 
 
 public class Agent {
-    public final static String VERSION = "1.0.4";
+    public final static String VERSION = "1.0.5";
     public final static String SAAS_DASHBOARD_ADDRESS = "https://agent-api.stackimpact.com";
 
     private static Agent instance;

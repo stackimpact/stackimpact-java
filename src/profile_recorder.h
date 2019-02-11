@@ -19,7 +19,7 @@ typedef struct {
 } ASGCT_CallFrame;
 
 typedef struct {
-    JNIEnv* env;
+    JNIEnv* env_id;
     jint num_frames;
     ASGCT_CallFrame* frames;
 } ASGCT_CallTrace;
@@ -51,7 +51,7 @@ class Sample {
         double measurement;
 
         Sample() {
-            call_trace = {Agent::instance.jni, MAX_FRAMES, frames};
+            call_trace = {NULL, MAX_FRAMES, frames};
         }
 };
 
