@@ -15,7 +15,7 @@ import com.stackimpact.agent.reporters.*;
 
 
 public class Agent {
-    public final static String VERSION = "1.0.5";
+    public final static String VERSION = "1.0.6";
     public final static String SAAS_DASHBOARD_ADDRESS = "https://agent-api.stackimpact.com";
 
     private static Agent instance;
@@ -416,7 +416,6 @@ public class Agent {
             logInfo("Found extracted JVMTI agent.");
             return filePath;
         }
-        file.setExecutable(true, true);
 
         InputStream in = getClass().getResourceAsStream(File.separator + name);
         if (in == null) {
@@ -431,9 +430,7 @@ public class Agent {
         out.close();
         in.close();
 
-        if(!System.getProperty("os.name").startsWith("Windows")) {
-            Runtime.getRuntime().exec("chmod u+x " + filePath);
-        }
+        file.setExecutable(true, true);
 
         return filePath;
     }
